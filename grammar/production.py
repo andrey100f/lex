@@ -17,8 +17,14 @@ class Production:
     def get_values(self):
         return self.__values
 
+    def set_values(self, values):
+        self.__values = values
+
     def get_symbol(self):
         return self.__symbol
+
+    def set_symbol(self, symbol):
+        self.__symbol = symbol
 
     def __str__(self):
         return f'{self.__symbol} -> {self.__values}'

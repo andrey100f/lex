@@ -91,6 +91,10 @@ class Grammar:
     def get_productions(self):
         return self.__productions
 
+    def set_productions(self, productions):
+        for production in productions:
+            self.__productions.append(production)
+
     def get_production_by_non_terminal(self, non_terminal):
         result = None
         for production in self.__productions:
@@ -102,11 +106,22 @@ class Grammar:
     def get_start_symbol(self):
         return self.__start_symbol
 
+    def set_start_symbol(self, start_symbol):
+        self.__start_symbol = start_symbol
+
     def get_terminals(self):
         return self.__terminals
 
+    def set_terminals(self, terminals):
+        for terminal in terminals:
+            self.__terminals.append(terminal)
+
     def get_non_terminals(self):
         return self.__non_terminals
+
+    def set_non_terminals(self, non_terminals):
+        for non_terminal in non_terminals:
+            self.__non_terminals.append(non_terminal)
 
     def get_end_symbol(self):
         return self.__end_symbol
@@ -134,6 +149,48 @@ class Grammar:
                         return False
 
         return True
+
+    def eliminate_left_recursion(self, grammar):
+        new_rules = []
+        non_terminals = grammar.get_non_terminals()
+
+        for non_terminal in non_terminals:
+            productions = grammar.get_production_by_non_terminal(non_terminal).get_values()
+            left_recursive = []
+            non_left_recursive = []
+
+            for production in productions:
+                if production[0] == non_terminal:
+                    left_recursive.append(production[1:])
+                else:
+                    non_left_recursive.append(production)
+
+            if left_recursive:
+                new_non_terminal = non_terminal + "'"
+                new_rules.append((non_terminal, [x + new_non_terminal for x in non_left_recursive]))
+                new_rules.append((new_non_terminal, [x + new_non_terminal for x in left_recursive]))
+            else:
+                new_rules.append((non_terminal, non_left_recursive))
+
+        new_grammar = {"non_terminals": [], "terminals": grammar.get_terminals(), "productions": {}}
+        for rule in new_rules:
+            new_grammar["non_terminals"].append(rule[0])
+            new_grammar["productions"][rule[0]] = rule[1]
+
+        result_grammar = Grammar()
+        result_grammar.set_non_terminals(new_grammar["non_terminals"])
+        result_grammar.set_terminals(grammar.get_terminals())
+        result_grammar.set_start_symbol(grammar.get_start_symbol())
+
+        list_of_productions = []
+        for production in new_grammar["productions"].keys():
+            prod = Production()
+            prod.set_symbol(production)
+            prod.set_values(new_grammar["productions"][production])
+            list_of_productions.append(prod)
+        result_grammar.set_productions(list_of_productions)
+
+        return result_grammar
 
     def convert_to_finite_automate(self, filename):
         if self.check_regular() is False:
@@ -187,7 +244,6 @@ class Grammar:
         print(f"Multimea non-terminalelor este: {self.__non_terminals}")
         print(f"Multimea terminalelor este: {self.__terminals}")
         print(f"Simbolul de start este: {self.__start_symbol}")
-        print(f"Simbolul final este: {self.__end_symbol}")
         print("Multimea productiilor este: ")
         for production in self.__productions:
             print(production)
