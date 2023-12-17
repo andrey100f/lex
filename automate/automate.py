@@ -188,7 +188,7 @@ class Automate:
             production.set_production(line)
             productions.append(production)
 
-        grammar.config_grammar_from_automate(non_terminals, terminals, start_symbol, end_symbol, productions, filename)
+        grammar.config_grammar_from_automate(non_terminals, terminals, start_symbol, productions, filename)
 
         return grammar
 

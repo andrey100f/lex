@@ -7,9 +7,8 @@ class Grammar:
         self.__terminals = []
         self.__productions = []
         self.__start_symbol = None
-        self.__end_symbol = None
 
-    def config_grammar_from_automate(self, non_terminals, terminals, start_symbol, end_symbol, productions, filename):
+    def config_grammar_from_automate(self, non_terminals, terminals, start_symbol, productions, filename):
         for non_terminal in non_terminals:
             self.__non_terminals.append(non_terminal)
         for terminal in terminals:
@@ -17,7 +16,6 @@ class Grammar:
         for production in productions:
             self.__productions.append(production)
         self.__start_symbol = start_symbol
-        self.__end_symbol = end_symbol
 
         self.__create_config_file(filename)
 
@@ -42,9 +40,6 @@ class Grammar:
             file.write(self.__start_symbol)
             file.write("\n")
 
-            file.write(self.__end_symbol)
-            file.write("\n")
-
             for production in self.__productions:
                 symbol = production.get_symbol()
                 values = " | ".join(production.get_values())
@@ -64,9 +59,6 @@ class Grammar:
                 elif line_number == 3:
                     line = line.strip("\n")
                     self.__start_symbol = line
-                elif line_number == 4:
-                    line = line.strip("\n")
-                    self.__end_symbol = line
                 else:
                     self.__add_productions(line)
 
