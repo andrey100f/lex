@@ -115,9 +115,6 @@ class Grammar:
         for non_terminal in non_terminals:
             self.__non_terminals.append(non_terminal)
 
-    def get_end_symbol(self):
-        return self.__end_symbol
-
     def check_regular(self):
         nr_start_symbol = 0
         for production in self.__productions:
