@@ -69,20 +69,19 @@ class UI:
                     print("Automatul generat este: ")
                     automate.print_automate()
             elif choice == "8":
-                first = self.__ll1.get_first()
-
-                if first is None:
+                if self.__grammar.check_gic() is False:
                     print("Gramatica nu este GIC!!")
                 else:
+                    first = self.__ll1.get_first()
+
                     print("Multimea FIRST este: ")
                     for key in first.keys():
                         print(f"FIRST({key}) = {first[key]}")
             elif choice == "9":
-                follow = self.__ll1.get_follow()
-
-                if follow is None:
+                if self.__grammar.check_gic() is False:
                     print("Gramatica nu este GIC!!")
                 else:
+                    follow = self.__ll1.get_follow()
                     print("Multimea FOLLOW este: ")
                     for key in follow.keys():
                         print(f"FOLLOW({key}) = {follow[key]}")

@@ -22,9 +22,6 @@ class LeftLeftOne:
                     self.__first[non_terminal] = []
 
     def get_first(self):
-        if self.__grammar.check_gic() is False:
-            return None
-
         non_terminals = self.__grammar.get_non_terminals()
 
         self.__config_first()
@@ -55,9 +52,6 @@ class LeftLeftOne:
         return self.__first
 
     def __config_follow(self):
-        if self.__grammar.check_gic() is False:
-            return None
-
         non_terminals = self.__grammar.get_non_terminals()
 
         for non_terminal in non_terminals:
