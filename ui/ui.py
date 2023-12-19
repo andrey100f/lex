@@ -71,15 +71,21 @@ class UI:
             elif choice == "8":
                 first = self.__ll1.get_first()
 
-                print("Multimea FIRST este: ")
-                for key in first.keys():
-                    print(f"FIRST({key}) = {first[key]}")
+                if first is None:
+                    print("Gramatica nu este GIC!!")
+                else:
+                    print("Multimea FIRST este: ")
+                    for key in first.keys():
+                        print(f"FIRST({key}) = {first[key]}")
             elif choice == "9":
                 follow = self.__ll1.get_follow()
 
-                print("Multimea FOLLOW este: ")
-                for key in follow.keys():
-                    print(f"FOLLOW({key}) = {follow[key]}")
+                if follow is None:
+                    print("Gramatica nu este GIC!!")
+                else:
+                    print("Multimea FOLLOW este: ")
+                    for key in follow.keys():
+                        print(f"FOLLOW({key}) = {follow[key]}")
             elif choice == "x":
                 break
             else:
