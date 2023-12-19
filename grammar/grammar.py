@@ -7,6 +7,7 @@ class Grammar:
         self.__terminals = []
         self.__productions = []
         self.__start_symbol = None
+        self.__end_symbol = None
 
     def config_grammar_from_automate(self, non_terminals, terminals, start_symbol, productions, filename):
         for non_terminal in non_terminals:
@@ -95,6 +96,17 @@ class Grammar:
                 result = production
         return result
 
+    def get_production_containing_non_terminal(self, non_terminal):
+        result = []
+
+        for production in self.__productions:
+            production_values = production.get_values()
+            for value in production_values:
+                if non_terminal in value and production not in result:
+                    result.append(production)
+
+        return result
+
     def get_start_symbol(self):
         return self.__start_symbol
 
@@ -137,49 +149,20 @@ class Grammar:
                     if letter not in self.__terminals and letter not in self.__non_terminals:
                         return False
 
+        for production in self.__productions:
+            values = production.get_values()
+
+            for value in values:
+                ok = True
+
+                for char in value:
+                    if char in self.__terminals:
+                        ok = False
+
+                if ok is True:
+                    return False
+
         return True
-
-    def eliminate_left_recursion(self, grammar):
-        new_rules = []
-        non_terminals = grammar.get_non_terminals()
-
-        for non_terminal in non_terminals:
-            productions = grammar.get_production_by_non_terminal(non_terminal).get_values()
-            left_recursive = []
-            non_left_recursive = []
-
-            for production in productions:
-                if production[0] == non_terminal:
-                    left_recursive.append(production[1:])
-                else:
-                    non_left_recursive.append(production)
-
-            if left_recursive:
-                new_non_terminal = non_terminal + "'"
-                new_rules.append((non_terminal, [x + new_non_terminal for x in non_left_recursive]))
-                new_rules.append((new_non_terminal, [x + new_non_terminal for x in left_recursive]))
-            else:
-                new_rules.append((non_terminal, non_left_recursive))
-
-        new_grammar = {"non_terminals": [], "terminals": grammar.get_terminals(), "productions": {}}
-        for rule in new_rules:
-            new_grammar["non_terminals"].append(rule[0])
-            new_grammar["productions"][rule[0]] = rule[1]
-
-        result_grammar = Grammar()
-        result_grammar.set_non_terminals(new_grammar["non_terminals"])
-        result_grammar.set_terminals(grammar.get_terminals())
-        result_grammar.set_start_symbol(grammar.get_start_symbol())
-
-        list_of_productions = []
-        for production in new_grammar["productions"].keys():
-            prod = Production()
-            prod.set_symbol(production)
-            prod.set_values(new_grammar["productions"][production])
-            list_of_productions.append(prod)
-        result_grammar.set_productions(list_of_productions)
-
-        return result_grammar
 
     def convert_to_finite_automate(self, filename):
         if self.check_regular() is False:
@@ -218,11 +201,11 @@ class Grammar:
                                 line = production.get_symbol() + " " + val[1] + " " + val[0]
                                 transition.set_transition(line)
                                 transitions.append(transition)
-                            elif val not in self.__non_terminals:
-                                transition = Transition()
-                                line = production.get_symbol() + " " + val + " " + self.__end_symbol
-                                transition.set_transition(line)
-                                transitions.append(transition)
+                            # elif val not in self.__non_terminals:
+                            #     transition = Transition()
+                            #     line = production.get_symbol() + " " + val + " " + self.__end_symbol
+                            #     transition.set_transition(line)
+                            #     transitions.append(transition)
 
         automate.config_automate_from_grammar(states, alphabet, transitions, initial_state, final_state, filename)
 

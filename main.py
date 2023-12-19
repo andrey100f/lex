@@ -1,15 +1,15 @@
-from LeftLeftOne import LeftLeftOne
+from ll1.LeftLeftOne import LeftLeftOne
 from grammar.grammar import Grammar
 
 
 def main():
     grammar = Grammar()
-    grammar.config_grammar_from_file("grammar/grammar_config.txt")
-    new_grammar = grammar.eliminate_left_recursion(grammar)
-    new_grammar.print_grammar()
-    ll1 = LeftLeftOne(new_grammar)
+    grammar.config_grammar_from_file("grammar/config/grammar_config_1.txt")
+    ll1 = LeftLeftOne(grammar)
     first = ll1.get_first()
     print(first)
+
+    print(ll1.get_follow())
 
 
 if __name__ == '__main__':

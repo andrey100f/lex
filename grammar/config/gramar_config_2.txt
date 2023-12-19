@@ -1,0 +1,8 @@
+a ( ) + * E
+S A B C D
+S
+S -> BA
+A -> +BA | E
+B -> DC
+C -> *DC | E
+D -> (S) | a
