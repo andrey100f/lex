@@ -1,0 +1,7 @@
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+S A B
+S
+B
+S -> A | B
+A -> Aa | Ab | Ac | Ad | Ae | Af | Ag | Ah | Ai | Aj | Ak | Al | Am | An | Ao | Ap | Aq | Ar | As | At | Au | Av | Aw | Ax | Ay | Az | B
+B -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z

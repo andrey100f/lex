@@ -1,15 +1,9 @@
-from ll1.LeftLeftOne import LeftLeftOne
-from grammar.grammar import Grammar
+from ui.ui import UI
 
 
 def main():
-    grammar = Grammar()
-    grammar.config_grammar_from_file("grammar/config/grammar_config_1.txt")
-    ll1 = LeftLeftOne(grammar)
-    first = ll1.get_first()
-    print(first)
-
-    print(ll1.get_follow())
+    ui = UI("grammar/config/grammar_config_1.txt")
+    ui.display_menu()
 
 
 if __name__ == '__main__':
